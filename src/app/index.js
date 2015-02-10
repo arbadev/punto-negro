@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('puntoNegroClient', ['ui.bootstrap']);
+angular.module('puntoNegro', ['ui.bootstrap']);

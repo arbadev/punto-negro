@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('puntoNegroClient')
+angular.module('puntoNegro')
   .controller('MainCtrl', function ($scope) {
     $scope.awesomeThings = [
       {
