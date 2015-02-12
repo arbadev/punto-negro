@@ -1,3 +1,2 @@
 'use strict';
-
-angular.module('puntoNegro', ['ui.bootstrap']);
+angular.module('puntoNegro', ['ui.bootstrap', 'googlechart']);

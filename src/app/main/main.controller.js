@@ -1,70 +1,110 @@
 'use strict';
 
 angular.module('puntoNegro')
-  .controller('MainCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      {
-        'title': 'AngularJS',
-        'url': 'https://angularjs.org/',
-        'description': 'HTML enhanced for web apps!',
-        'logo': 'angular.png'
-      },
-      {
-        'title': 'BrowserSync',
-        'url': 'http://browsersync.io/',
-        'description': 'Time-saving synchronised browser testing.',
-        'logo': 'browsersync.png'
-      },
-      {
-        'title': 'GulpJS',
-        'url': 'http://gulpjs.com/',
-        'description': 'The streaming build system.',
-        'logo': 'gulp.png'
-      },
-      {
-        'title': 'Jasmine',
-        'url': 'http://jasmine.github.io/',
-        'description': 'Behavior-Driven JavaScript.',
-        'logo': 'jasmine.png'
-      },
-      {
-        'title': 'Karma',
-        'url': 'http://karma-runner.github.io/',
-        'description': 'Spectacular Test Runner for JavaScript.',
-        'logo': 'karma.png'
-      },
-      {
-        'title': 'Protractor',
-        'url': 'https://github.com/angular/protractor',
-        'description': 'End to end test framework for AngularJS applications built on top of WebDriverJS.',
-        'logo': 'protractor.png'
-      },
-      {
-        'title': 'jQuery',
-        'url': 'http://jquery.com/',
-        'description': 'jQuery is a fast, small, and feature-rich JavaScript library.',
-        'logo': 'jquery.jpg'
-      },
-      {
-        'title': 'Bootstrap',
-        'url': 'http://getbootstrap.com/',
-        'description': 'Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile first projects on the web.',
-        'logo': 'bootstrap.png'
-      },
-      {
-        'title': 'Angular UI Bootstrap',
-        'url': 'http://angular-ui.github.io/bootstrap/',
-        'description': 'Bootstrap components written in pure AngularJS by the AngularUI Team.',
-        'logo': 'ui-bootstrap.png'
-      },
-      {
-        'title': 'Less',
-        'url': 'http://lesscss.org/',
-        'description': 'Less extends the CSS language, adding features that allow variables, mixins, functions and many other techniques.',
-        'logo': 'less.png'
+  .controller('MainCtrl', function($scope, $http){
+
+    // generadores disponibles
+    $scope.generators = [
+      { name: 'L\'Ecuyer' }
+    ]
+
+    // valores por defecto
+    $scope.seed = 1;
+    $scope.generator = $scope.generators[0];
+
+    //
+    $scope.isLoadding = false;
+    $scope.isShowData = false;
+
+    // tabla y grafica
+    $scope.tables = {};
+    $scope.chart = {};
+
+    /**
+     * funcion que hace la peticion al servidor para que simule los datos
+     */
+    $scope.simulate = function(form) {
+
+      if (form.$valid) {
+        $scope.isLoadding = true;
+
+        $http.get('http://punto-negro-api.herokuapp.com/simulator/'+$scope.seed)
+          .success(function(data) {
+            console.log('success');
+            console.log(data);
+            // this callback will be called asynchronously
+            // when the response is available
+            $scope.isShowData = true;
+            $scope.isLoadding = false;
+
+            // Promedio de los Et
+            $scope.promEt = data.prom;
+
+            // Variables para contruir la tabla
+            $scope.tables = data.tables;
+
+            var rows = new Array();
+            data.tables.forEach(function(table) {
+              rows.push({
+                'c': [
+                  {
+                    'v': table.N,
+                    'f':'N: ' + table.N
+                  },
+                  {
+                    'v': table.Et
+                  }
+                ]
+              });
+            });
+
+            console.log(rows);
+
+            $scope.chart = {
+              "type": "LineChart",
+              "displayed": true,
+              "options": {
+                "pointSize": 3,
+                "isStacked": "true",
+                "fill": 20,
+                "displayExactValues": true,
+                "vAxis": {
+                  "title": "Et"
+                },
+                "hAxis": {
+                  "title": "Iteraciones"
+                }
+              },
+              "formatters": {},
+              "data": {
+                "cols": [
+                  {
+                    "id": "prom",
+                    "label": "Promedio",
+                    "type": "number",
+                    "p": {}
+                  },
+                  {
+                    "id": "fet",
+                    "label": "F(Et)",
+                    "type": "number",
+                    "p": {}
+                  }
+                ],
+                "rows": rows
+              }
+            };
+
+
+          })
+          .error(function(data, status, headers, config) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+            console.log('error');
+            $scope.isLoadding = false;
+
+            alert('Semilla Invalida');
+          });
       }
-    ];
-    angular.forEach($scope.awesomeThings, function(awesomeThing) {
-      awesomeThing.rank = Math.random();
-    });
+    };
   });

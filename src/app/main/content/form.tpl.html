@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+
+    <form class="form-inline" name="form" ng-submit="simulate(form)" novalidate="" >
+      <fieldset ng-disabled="isLoadding">
+
+        <div class="form-group" ng-class='{"has-error": form.generator.$invalid }'>
+          <label for="generator">Generador</label>
+          <select name="generator" ng-model="generator" required="" class="form-control" ng-options="generator.name for generator in generators" >
+          </select>
+        </div>
+
+        <div class="form-group" ng-class='{"has-error": form.seed.$invalid }'>
+          <label for="seed">Semilla</label>
+          <input name="seed" ng-model="seed" required="" type="number" class="form-control" >
+        </div>
+
+        <button type="submit" class="btn btn-default">Simular</button>
+
+      </fieldset>
+    </form>
+
+  </div>
+</div>
