@@ -1,16 +1,18 @@
 'use strict';
 
 angular.module('puntoNegro')
-  .controller('MainCtrl', function($scope, $http){
+  .controller('MainCtrl', function($rootScope, $scope, $http){
 
     // generadores disponibles
     $scope.generators = [
       { name: 'L\'Ecuyer' }
     ]
 
+    $scope.generator = {};
+
     // valores por defecto
-    $scope.seed = 1;
-    $scope.generator = $scope.generators[0];
+    $scope.generator.seed = 1;
+    $scope.generator.generator = $scope.generators[0];
 
     //
     $scope.isLoadding = false;
@@ -28,7 +30,9 @@ angular.module('puntoNegro')
       if (form.$valid) {
         $scope.isLoadding = true;
 
-        $http.get('http://punto-negro-api.herokuapp.com/simulator/'+$scope.seed)
+        console.log('seed: ' + $scope.generator.seed);
+
+        $http.get('http://punto-negro-api.herokuapp.com/simulator/' + $scope.generator.seed)
           .success(function(data) {
             console.log('success');
             console.log(data);
