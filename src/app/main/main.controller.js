@@ -1,7 +1,10 @@
 'use strict';
 
 angular.module('puntoNegro')
-  .controller('MainCtrl', function($rootScope, $scope, $http, $modal){
+  .run(function($anchorScroll) {
+    $anchorScroll.yOffset = 90;
+  })
+  .controller('MainCtrl', function($rootScope, $scope, $http, $modal, $location, $anchorScroll){
 
     // generadores disponibles
     $scope.generators = [
@@ -43,8 +46,7 @@ angular.module('puntoNegro')
 
         $http.get('http://punto-negro-api.herokuapp.com/simulator/' + $scope.generator.seed)
           .success(function(data) {
-            console.log('success');
-            console.log(data);
+            $location.path('/');
             // this callback will be called asynchronously
             // when the response is available
             $scope.isShowData = true;
@@ -84,7 +86,7 @@ angular.module('puntoNegro')
                 "vAxis": {
                   "title": "Et",
                   "viewWindow":{
-                    "max":6,
+                    "max":5,
                     "min":0
               }
                 },
@@ -112,7 +114,8 @@ angular.module('puntoNegro')
               }
             };
 
-
+          $location.hash('results');
+          $anchorScroll();
           })
           .error(function(data, status, headers, config) {
             // called asynchronously if an error occurs
