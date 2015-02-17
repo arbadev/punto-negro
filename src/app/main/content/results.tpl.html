@@ -1,6 +1,25 @@
 <div class="row">
-  <h3>Promedio de Et: <span>{{ promEt | number:5 }}</span></h3>
+  <p class="results-info">
+    <span>Promedio de Et: <b>{{ promEt | number:5 }}</b></span><br>
+    <button type="button" class="btn btn-default" ng-click="openLeyenda()">
+      Leyenda
+    </button>
+  </p>
 </div>
+
+<script type="text/ng-template" id="modalLeyenda.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Leyenda</h3>
+  </div>
+  <div class="modal-body">
+    <p><b>N</b>:&#9;&#9;Tamaño de la muestra</p>
+    <p><b>X</b>:&#9;&#9;Cantidad de números aletorios que se necesitaron para llegar a 1</p>
+    <p><b>Fx</b>:&#9;&#9;Frecuencia observada de x</p>
+    <p><b>P(x)</b>:&#9;&#9;Probablidad de x <code>Fx / N</code></p>
+    <p><b>Ex</b>:&#9;&#9;Esperanza de x <code>P(x) / x</code></p>
+    <p><b>Et</b>:&#9;&#9;Esperanza total <code>&#x3A3;(Ex)</code></p>
+  </div>
+</script>
 
 <div class="row">
   <tabset justified="true">

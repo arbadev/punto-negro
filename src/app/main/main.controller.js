@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('puntoNegro')
-  .controller('MainCtrl', function($rootScope, $scope, $http){
+  .controller('MainCtrl', function($rootScope, $scope, $http, $modal){
 
     // generadores disponibles
     $scope.generators = [
@@ -21,6 +21,15 @@ angular.module('puntoNegro')
     // tabla y grafica
     $scope.tables = {};
     $scope.chart = {};
+
+    /**
+     * funcion que abre el modal con la l
+     */
+    $scope.openLeyenda = function () {
+      $modal.open({
+        templateUrl: 'modalLeyenda.html'
+      });
+    };
 
     /**
      * funcion que hace la peticion al servidor para que simule los datos
@@ -68,12 +77,16 @@ angular.module('puntoNegro')
               "type": "LineChart",
               "displayed": true,
               "options": {
-                "pointSize": 3,
+                "pointSize": 4,
                 "isStacked": "true",
                 "fill": 20,
                 "displayExactValues": true,
                 "vAxis": {
-                  "title": "Et"
+                  "title": "Et",
+                  "viewWindow":{
+                    "max":6,
+                    "min":0
+              }
                 },
                 "hAxis": {
                   "title": "Iteraciones"
